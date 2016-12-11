@@ -20,7 +20,11 @@ exports.serial = function (operations, callback) {
     var operationIndex = 1;
     function nextFunction(error, data) {
         if (!error && operations[operationIndex]) {
-            operations[operationIndex++](data, nextFunction);
+            if (data) {
+                operations[operationIndex++](data, nextFunction);
+            } else {
+                operations[operationIndex++](nextFunction);
+            }
         } else {
             callback(error, data);
         }
